@@ -13,16 +13,19 @@ RSpec.describe "タスク管理機能", type: :system do
     fill_in 'パスワード', with: login_user.password
     click_button 'ログインする'
   end
+
+  # shared_exampleを利用して共通のコードをまとめる
+  shared_examples_for 'ユーザーAが作成したタスクが表示される' do
+    it { expect(page).to have_content '最初のタスク' }
+  end
   
   describe '一覧表示機能' do
     context 'ユーザーAがログインしているとき' do
       # ユーザーAでログインする
       let(:login_user) { user_a }
 
-      it 'ユーザーAが作成したタスクが表示される' do
-        # 作成ずみのタスクの名称が画面に表示されていることを確認
-        expect(page).to have_content '最初のタスク'
-      end
+      # 作成ずみのタスクの名称が画面に表示されていることを確認
+      it_behaves_like 'ユーザーAが作成したタスクが表示される'
     end
 
     context 'ユーザーBがログインしているとき' do
@@ -44,9 +47,7 @@ RSpec.describe "タスク管理機能", type: :system do
         visit task_path(task_a)
       end
 
-      it 'ユーザーAが作成したタスクが表示される' do
-        expect(page).to have_content '最初のタスク'
-      end
+      it_behaves_like 'ユーザーAが作成したタスクが表示される'
     end
   end
 end
