@@ -78,4 +78,32 @@ RSpec.describe "タスク管理機能", type: :system do
       end
     end
   end
+
+  describe '更新機能' do
+    let(:login_user) { user_a }
+
+    before do
+      visit edit_task_path(task_a)
+      fill_in '名称', with: task_name
+      click_button '更新する'
+    end
+
+    context '編集画面で名称を変更したとき' do
+      let(:task_name) { 'タスクの名称を変更' }
+
+      it '正常に更新される' do
+        expect(page).to have_selector '.alert-success', text: 'タスクの名称を変更'
+      end
+    end
+
+    context '編集画面で名称を入力しなかったとき' do
+      let(:task_name) { '' }
+
+      it 'エラーとなる' do
+        within '#error_explanation' do
+          expect(page).to have_content '名称を入力してください'
+        end
+      end
+    end
+  end
 end
