@@ -7,4 +7,5 @@ class TaskMailer < ApplicationMailer
       to: 'user@example.com',
       from: 'taskleaf@example.com'
     )
+  end
 end
